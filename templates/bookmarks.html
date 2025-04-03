@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block body %}
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Bookmarks</h1>
+            <button class="filter-btn">Filter ▼</button>
+        </div>
+
+        <div class="dashboard-content">
+            <div class="polls-section">
+                <h2>Your Bookmarked Polls</h2>
+                <div class="polls-container">
+                    <div class="poll-card card">
+                        <div class="poll-header">
+                            <img src="https://via.placeholder.com/40" alt="Profile" class="profile-pic-small">
+                            <div class="poll-info">
+                                <span class="username">TechGuru</span>
+                                <span class="timestamp">March 28, 2025</span>
+                            </div>
+                            <span class="voted">Bookmarked</span>
+                        </div>
+                        <h3>Future of AI?</h3>
+                        <div class="poll-options">
+                            <div class="option">
+                                <span>Positive</span>
+                                <div class="progress-bar" style="width: 80%;"></div>
+                                <span>80%</span>
+                            </div>
+                            <div class="option">
+                                <span>Negative</span>
+                                <div class="progress-bar" style="width: 20%;"></div>
+                                <span>20%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

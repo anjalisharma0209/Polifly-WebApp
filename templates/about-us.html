@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block body %}
+
+    <div class="main-content about-us-content">
+        <div class="header">
+            <h1 class="fade-in">About Us</h1>
+            <!-- <p class="intro-text fade-in" style="animation-delay: 0.2s;">Meet the minds behind PollyFy – crafting innovative polling solutions with passion and expertise.</p> -->
+        </div>
+
+        <div class="team-section">
+            <div class="team-card card slide-in-left">
+                <div class="team-details">
+                    <h3>Anjali Sharma</h3>
+                    <p class="role">Backend Developer</p>
+                    <p>Expert in backend development and UI/UX design. Passionate about creating seamless, interactive polling experiences.</p>
+                    <a href="https://github.com/anjalisharma0209/" class="know-more">Github</a>
+                </div>
+                <div class="team-photo-container">
+                    <img src="{{ url_for('static',filename='img/an.jpg' ) }}" alt="Anjali Sharma" class="team-photo">
+                    <!-- <img src="2.jpg" alt="Praveen" class="team-photo"> -->
+
+                </div>
+            </div>
+
+            <div class="team-card card slide-in-right">
+                <div class="team-photo-container">
+                    <img src="{{ url_for('static',filename='img/2.jpg' ) }}" alt="Praveen" class="team-photo">
+                </div>
+                <div class="team-details">
+                    <h3>Praveen</h3>
+                    <p class="role">Frontend Developer</p>
+                    <p>Skilled in frontend development and UI/UX design. Dedicated to building engaging and user-friendly interfaces.</p>
+                    <a href="https://github.com/PraveenDevPro-03" class="know-more">Github</a>
+                </div>
+            </div>
+        </div>
+    </div>  
+    </div>
+    <script src="{{ url_for('static',filename='scripts.js' ) }}"></script>
+</body>
+</html>
+{% endblock %}

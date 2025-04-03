@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block body %}
+
+    <div class="main-content">
+        <div class="header">
+            <h1>My Polls</h1>
+            <button class="filter-btn">Filter ▼</button>
+        </div>
+
+        <div class="dashboard-content">
+            <div class="polls-section">
+                <h2>Your Created Polls</h2>
+                <div class="polls-container" id="myPollsContainer"></div>
+                <p class="login-prompt" id="loginPrompt">Please <a href="login.html">login</a> to see your polls.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-card card" id="profileCard" style="display: none;">
+        <div class="profile-header">
+            <img src="https://via.placeholder.com/100" alt="Profile" class="profile-pic" id="profilePic">
+            <input type="file" id="profilePicUpload" accept="image/*" style="display: none;">
+            <button class="btn" id="updatePicBtn" style="margin-top: 10px;">Update Picture</button>
+            <h3 id="profileUsername"></h3>
+            <p id="profileHandle"></p>
+        </div>
+        <div class="profile-stats">
+            <div><span id="pollsCreated">0</span> Polls Created</div>
+            <div><span>0</span> Polls Voted</div>
+            <div><span>0</span> Bookmarks</div>
+        </div>
+        <a href="index.html" class="btn">Go to Dashboard</a>
+    </div>
+
+
+
+    <script src="scripts.js"></script>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="popup-container" id="createPollPopup" >
+        <div class="create-poll-card card">
+            <h2>Create New Poll</h2>
+            <form id="pollForm">
+                <div class="input-box">
+                    <input type="text" id="pollQuestion" required>
+                    <label>Poll Question</label>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="option1" required>
+                    <label>Option 1</label>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="option2" required>
+                    <label>Option 2</label>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="option3">
+                    <label>Option 3 (Optional)</label>
+                </div>
+                <button type="submit" class="btn">Create Poll</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
+{% endblock %}

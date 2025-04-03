@@ -1,0 +1,205 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PollyFy - Sign In / Sign Up</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css' ) }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --radiant-purple: #8A2BE2;
+            --light-purple: #E6D8FF;
+            --dark-purple: #4B0082;
+            --white: #FFFFFF;
+            --shadow: rgba(75, 0, 130, 0.2);
+            --gradient: linear-gradient(45deg, #E6D8FF, #D8B9FF, #C299FF, #8A2BE2);
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--gradient);
+            color: var(--dark-purple);
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 500px;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 5px 20px var(--shadow);
+            overflow: hidden;
+        }
+
+        .form-container {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            padding: 40px;
+            transition: all 0.6s ease-in-out;
+        }
+
+        .sign-in { left: 0; z-index: 2; }
+        .sign-up { right: 0; opacity: 0; z-index: 1; }
+
+        .container.active .sign-in {
+            transform: translateX(100%);
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .container.active .sign-up {
+            transform: translateX(-100%);
+            opacity: 1;
+            z-index: 2;
+        }
+
+        h2 {
+            color: var(--radiant-purple);
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .input-box {
+            position: relative;
+            margin: 30px 0;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 15px;
+            background: var(--light-purple);
+            border: none;
+            outline: none;
+            border-radius: 8px;
+            color: var(--dark-purple);
+            font-size: 1em;
+        }
+
+        .input-box label {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--dark-purple);
+            opacity: 0.7;
+            pointer-events: none;
+            transition: 0.3s;
+        }
+
+        .input-box input:focus ~ label,
+        .input-box input:valid ~ label {
+            top: -5px;
+            font-size: 0.8em;
+            background: var(--white);
+            padding: 0 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: var(--radiant-purple);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            color: var(--white);
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: var(--dark-purple);
+            transform: translateY(-2px);
+        }
+
+        .toggle-text {
+            color: var(--dark-purple);
+            text-align: center;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .toggle-text:hover {
+            color: var(--radiant-purple);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                height: auto;
+                margin: 20px;
+            }
+            
+            .form-container {
+                width: 100%;
+                position: relative;
+            }
+            
+            .sign-up { display: none; }
+            .container.active .sign-up { display: block; }
+            .container.active .sign-in { display: none; }
+        }
+    </style>
+    <script>
+        function toggleForm() {
+            const container = document.querySelector('.container');
+            container.classList.toggle('active');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container sign-in">
+            <form id="signInForm">
+                <h2>Sign In</h2>
+                <div class="input-box">
+                    <input type="email" id="signInEmail" required>
+                    <label>Email</label>
+                </div>
+                <div class="input-box">
+                    <input type="password" id="signInPassword" required>
+                    <label>Password</label>
+                </div>
+                <button type="submit" class="btn">Sign In</button>
+                <p class="toggle-text" onclick="toggleForm()">Don't have an account? Sign Up</p>
+            </form>
+        </div>
+        
+        <div class="form-container sign-up">
+            <form id="signUpForm">
+                <h2>Sign Up</h2>
+                <div class="input-box">
+                    <input type="text" id="signUpUsername" required>
+                    <label>Username</label>
+                </div>
+                <div class="input-box">
+                    <input type="email" id="signUpEmail" required>
+                    <label>Email</label>
+                </div>
+                <div class="input-box">
+                    <input type="password" id="signUpPassword" required>
+                    <label>Password</label>
+                </div>
+                <button type="submit" class="btn">Sign Up</button>
+                <p class="toggle-text" onclick="toggleForm()">Already have an account? Sign In</p>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static',filename='scripts.js' ) }}"></script>
+</body>
+</html>
