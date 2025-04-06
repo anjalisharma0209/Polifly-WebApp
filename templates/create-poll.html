@@ -3,21 +3,21 @@
     <div class="popup-container" id="createPollPopup" >
         <div class="create-poll-card card">
             <h2>Create New Poll</h2>
-            <form id="pollForm">
+            <form id="pollForm" method="POST" action="{{ url_for('submit_poll')}}">
                 <div class="input-box">
-                    <input type="text" id="pollQuestion" required>
+                    <input type="text" id="pollQuestion" name="pollQuestion"required>
                     <label>Poll Question</label>
                 </div>
                 <div class="input-box">
-                    <input type="text" id="option1" required>
+                    <input type="text" name="option1" id="option1" required>
                     <label>Option 1</label>
                 </div>
                 <div class="input-box">
-                    <input type="text" id="option2" required>
+                    <input type="text" name="option2" id="option2" required>
                     <label>Option 2</label>
                 </div>
                 <div class="input-box">
-                    <input type="text" id="option3">
+                    <input type="text" name="option3" id="option3">
                     <label>Option 3 (Optional)</label>
                 </div>
                 <button type="submit" class="btn">Create Poll</button>

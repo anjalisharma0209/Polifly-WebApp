@@ -33,9 +33,9 @@ class UserManager {
     static updateAuthLink() {
         const authLink = document.getElementById('authLink');
         if (authLink) {
-            authLink.textContent = this.currentUser ? `🚪 Logout (${this.currentUser})` : '🚪 Login';
+            authLink.textContent = this.currentUser ? `🚪 Logout (${this.currentUser})` : '🚪Login';
             authLink.href = 'javascript:void(0);';
-            authLink.onclick = this.currentUser ? () => this.logout() : () => window.location.href = 'login.html';
+            authLink.onclick = this.currentUser ? () => this.logout() : () => window.location.href = '/auth';
         }
     }
 
@@ -393,37 +393,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // YouTube Sub-menu
-    const youtubeMenu = document.querySelector('.youtube-menu');
-    const youtubeSubMenu = document.getElementById('youtubeSubMenu');
-    if (youtubeMenu && youtubeSubMenu) {
-        youtubeMenu.addEventListener('click', (e) => {
-            e.preventDefault();
-            youtubeSubMenu.style.display = youtubeSubMenu.style.display === 'block' ? 'none' : 'block';
-        });
-    }
 
-    // Login/Signup Forms
-    const signInForm = document.getElementById('signInForm');
-    const signUpForm = document.getElementById('signUpForm');
 
-    if (signInForm) {
-        signInForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('signInEmail').value;
-            const username = email.split('@')[0];
-            UserManager.login(username);
-        });
-    }
+    // // Login/Signup Forms
+    // const signInForm = document.getElementById('signInForm');
+    // const signUpForm = document.getElementById('signUpForm');
 
-    if (signUpForm) {
-        signUpForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const username = document.getElementById('signUpUsername').value;
-            UserManager.login(username);
-        });
-    }
-});
+    // if (signInForm) {
+    //     signInForm.addEventListener('submit', (e) => {
+    //         e.preventDefault();
+    //         const email = document.getElementById('signInEmail').value;
+    //         const username = email.split('@')[0];
+    //         UserManager.login(username);
+    //     });
+    // }
+
+//     if (signUpForm) {
+//         signUpForm.addEventListener('submit', (e) => {
+//             e.preventDefault();
+//             const username = document.getElementById('signUpUsername').value;
+//             UserManager.login(username);
+//         });
+//     }
+// });
 
 function toggleForm() {
     const container = document.querySelector('.container');

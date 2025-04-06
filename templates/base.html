@@ -10,22 +10,27 @@
 <body>
     <div class="sidebar">
         <h2 class="logo">PollyFy</h2>
+        {% if session.get('username') %}
+            <div class="welcome-text">
+                <h3>Welcome, {{ session['username'] }} 👋</h3>
+            </div>
+        {% endif %}
+
         <nav>
             <a href="/index/" class="nav-item active"><span class="icon">📊</span> Dashboard</a>
             <a href="/my_polls/" class="nav-item"><span class="icon">📋</span> My Polls</a>
             <a href="/create_poll/" class="nav-item create-poll-btn"><span class="icon">➕</span> Create Poll</a>
             <a href="/voted_polls/" class="nav-item"><span class="icon">🗳️</span> Voted Polls</a>
-            <a href="/bookmarks/" class="nav-item"><span class="icon">🔖</span> Bookmarks</a>
-            <a href="/youtube_videos/" class="nav-item youtube-menu"><span class="icon">🎥</span> YouTube Videos</a>
-            <div class="sub-menu" id="youtubeSubMenu" style="display: none;">
-                <a href="/youtube_mechanical/">Mechanical</a>
-                <a href="/youtube_cs/">Computer Science</a>
-            </div>
+            <!-- <a href="/bookmarks/" class="nav-item"><span class="icon">🔖</span> Bookmarks</a> -->
             <a href="/about/" class="nav-item"><span class="icon">ℹ️</span> About Us</a>
-            <a href="/login/" class="nav-item" id="authLink"><span class="icon">🚪</span> Login</a>
+            <a href="{{ url_for('auth') if not session.get('username') else url_for('logout') }}" class="nav-item" id="authLink">
+                <span class="icon">🚪</span> 
+                {{ 'Login' if not session.get('username') else 'Logout' }}
+            </a>
+            
         </nav>
     </div>
 
-{% block body %} 
-
-{% endblock %}
+    {% block body %} {% endblock %}
+</body>
+</html>

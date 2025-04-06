@@ -1,35 +1,203 @@
 {% extends 'base.html' %}
 {% block body %}
 
-    <div class="main-content">
-        <div class="header">
-            <h1>Public Polls</h1>
-            <button class="filter-btn">Filter ▼</button>
-        </div>
-        <div class="polls-section">
-            <h2>Created Polls</h2>
-            <div class="polls-container" id="pollsContainer"></div>
-            <p class="login-prompt" id="loginPrompt">Please <a href="/login">login</a> to create polls or comment.</p>
-        </div>
+<style>
+    .polls-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 30px;
+        padding: 30px 40px;
+        justify-items: center;
+    }
+
+    .poll-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(8px);
+        border-radius: 18px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        padding: 25px 30px;
+        width: 100%;
+        max-width: 500px;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.8s ease forwards;
+    }
+
+    .poll-card:nth-child(1) { animation-delay: 0.1s; }
+    .poll-card:nth-child(2) { animation-delay: 0.2s; }
+    .poll-card:nth-child(3) { animation-delay: 0.3s; }
+    .poll-card:nth-child(4) { animation-delay: 0.4s; }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .poll-card h3 {
+        font-size: 30px;
+        font-weight: 700;
+        color: #222;
+        margin-bottom: 20px;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .option {
+        margin-bottom: 12px;
+    }
+
+    .option-text {
+        font-size: 18px;
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 6px;
+    }
+
+    .progress-bar {
+        height: 14px;
+        background-color: #e4e4e4;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .progress-fill {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.6s ease-in-out;
+    }
+
+    .color-1 { background-color: #ffb703; }
+    .color-2 { background-color: #219ebc; }
+    .color-3 { background-color: #8e44ad; }
+
+    .poll-card p {
+        font-size: 13px;
+        color: #555;
+        text-align: right;
+        margin-top: 12px;
+    }
+
+    .polls-section h2 {
+        text-align: center;
+        font-size: 28px;
+        margin-bottom: 15px;
+    }
+
+    .delete-btn {
+        background-color: #ff4d4d;
+        color: white;
+        padding: 6px 14px;
+        font-size: 14px;
+        border: none;
+        border-radius: 8px;
+        margin-top: 12px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .delete-btn:hover {
+        background-color: #d62828;
+    }
+
+    .already-voted {
+        color: green;
+        font-weight: 600;
+        margin-top: 10px;
+    }
+
+    .vote-option {
+        width: 100%;
+        text-align: left;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        padding: 10px 15px;
+        margin: 8px 0;
+        background-color: white;
+        transition: background 0.3s, border 0.3s;
+        cursor: pointer;
+    }
+
+    .vote-option:hover {
+        background-color: #f1f1f1;
+        border-color: #0077b6;
+    }
+</style>
+
+<div class="main-content">
+    <div class="header">
+        <h1>📊 Public Polls</h1>
     </div>
 
-    <div class="profile-card card" id="profileCard" style="display: none;">
-        <div class="profile-header">
-            <img src="https://via.placeholder.com/100" alt="Profile" class="profile-pic" id="profilePic">
-            <input type="file" id="profilePicUpload" accept="image/*" style="display: none;">
-            <button class="btn" id="updatePicBtn" style="margin-top: 10px;">Update Picture</button>
-            <h3 id="profileUsername"></h3>
-            <p id="profileHandle"></p>
-        </div>
-        <div class="profile-stats">
-            <div><span id="pollsCreated">0</span> Polls Created</div>
-            <div><span>0</span> Polls Voted</div>
-            <div><span>0</span> Bookmarks</div>
-        </div>
-        <a href="index" class="btn">Go to Dashboard</a>
-    </div>
+    <div class="polls-section">
+        <h2>🔥 Trending Polls</h2>
+        <div class="polls-container" id="pollsContainer">
+            {% if polls %}
+                {% for poll in polls %}
+                    {% set total_votes = (poll[6] or 0) + (poll[7] or 0) + (poll[8] or 0) %}
+                    <div class="poll-card">
+                        <h3>{{ poll[1] }}</h3>
 
-    <script src="scripts.js"></script>
-</body>
-</html>
+                        {% if session.get('username') and poll[0] not in voted_ids %}
+                            <form method="POST" action="{{ url_for('vote', poll_id=poll[0], option=1) }}">
+                                <button type="submit" class="vote-option">{{ poll[2] }}</button>
+                            </form>
+                            <form method="POST" action="{{ url_for('vote', poll_id=poll[0], option=2) }}">
+                                <button type="submit" class="vote-option">{{ poll[3] }}</button>
+                            </form>
+                            {% if poll[4] %}
+                            <form method="POST" action="{{ url_for('vote', poll_id=poll[0], option=3) }}">
+                                <button type="submit" class="vote-option">{{ poll[4] }}</button>
+                            </form>
+                            {% endif %}
+                        {% else %}
+                            <div class="option">
+                                <div class="option-text">{{ poll[2] }} - {{ poll[6] or 0 }} votes</div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill color-1" style="width: {{ ((poll[6] or 0) / total_votes * 100) if total_votes > 0 else 0 }}%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="option">
+                                <div class="option-text">{{ poll[3] }} - {{ poll[7] or 0 }} votes</div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill color-2" style="width: {{ ((poll[7] or 0) / total_votes * 100) if total_votes > 0 else 0 }}%;"></div>
+                                </div>
+                            </div>
+
+                            {% if poll[4] %}
+                            <div class="option">
+                                <div class="option-text">{{ poll[4] }} - {{ poll[8] or 0 }} votes</div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill color-3" style="width: {{ ((poll[8] or 0) / total_votes * 100) if total_votes > 0 else 0 }}%;"></div>
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            {% if session.get('username') %}
+                                <p class="already-voted">✅ You already voted on this poll.</p>
+                            {% else %}
+                                <p class="already-voted">🔒 Please login to vote.</p>
+                            {% endif %}
+                        {% endif %}
+
+                        <p><i>by {{ poll[5] or 'anonymous' }}</i></p>
+
+                        {% if session.get('username') == poll[5] %}
+                        <form method="POST" action="{{ url_for('delete_poll', poll_id=poll[0]) }}">
+                            <button type="submit" class="delete-btn">🗑 Delete</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No polls created yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script src="scripts.js"></script>
 {% endblock %}

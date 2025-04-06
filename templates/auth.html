@@ -1,12 +1,9 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PollyFy - Sign In / Sign Up</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -138,6 +135,13 @@
             color: var(--radiant-purple);
         }
 
+        .message {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
         @media (max-width: 768px) {
             .container {
                 height: auto;
@@ -162,44 +166,57 @@
     </script>
 </head>
 <body>
-    <div class="container">
+
+    <div class="container {% if request.form.get('action') == 'signup' %}active{% endif %}">
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <div class="message">{{ msg }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <!-- Sign In Form -->
         <div class="form-container sign-in">
-            <form id="signInForm">
+            <form method="POST" action="{{ url_for('auth') }}">
+                <input type="hidden" name="action" value="signin">
                 <h2>Sign In</h2>
                 <div class="input-box">
-                    <input type="email" id="signInEmail" required>
+                    <input type="email" name="email" required>
                     <label>Email</label>
                 </div>
                 <div class="input-box">
-                    <input type="password" id="signInPassword" required>
+                    <input type="password" name="password" required>
                     <label>Password</label>
                 </div>
-                <button type="submit" class="btn">Sign In</button>
+                <button type="submit">Sign In</button>
                 <p class="toggle-text" onclick="toggleForm()">Don't have an account? Sign Up</p>
             </form>
         </div>
-        
+
+        <!-- Sign Up Form -->
         <div class="form-container sign-up">
-            <form id="signUpForm">
+            <form method="POST" action="{{ url_for('auth') }}">
+                <input type="hidden" name="action" value="signup">
                 <h2>Sign Up</h2>
                 <div class="input-box">
-                    <input type="text" id="signUpUsername" required>
+                    <input type="text" name="name" required>
                     <label>Username</label>
                 </div>
                 <div class="input-box">
-                    <input type="email" id="signUpEmail" required>
+                    <input type="email" name="email" required>
                     <label>Email</label>
                 </div>
                 <div class="input-box">
-                    <input type="password" id="signUpPassword" required>
+                    <input type="password" name="password" required>
                     <label>Password</label>
                 </div>
-                <button type="submit" class="btn">Sign Up</button>
+                <button type="submit">Sign Up</button>
                 <p class="toggle-text" onclick="toggleForm()">Already have an account? Sign In</p>
             </form>
         </div>
     </div>
 
-    <script src="{{ url_for('static',filename='scripts.js' ) }}"></script>
 </body>
 </html>
